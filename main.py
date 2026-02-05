@@ -25,7 +25,7 @@ class Order(BaseModel):
 def home():
     return {"message": "Welcome to Abhinai's Food Stall 🍕"}
 
-@app.post("/menu/{food_id}")
+@app.post("/menu/")
 def add_food(food_id: int, food: FoodItem):
     menu_db[food_id] = food
     return {"message": "Food item added", "food": food}
@@ -34,26 +34,26 @@ def add_food(food_id: int, food: FoodItem):
 def view_menu():
     return menu_db
 
-@app.get("/menu/{food_id}")
+@app.get("/menu")
 def get_food(food_id: int):
     if food_id not in menu_db:
         raise HTTPException(status_code=404, detail="Food not found")
     return menu_db[food_id]
 
-@app.put("/menu/{food_id}")
+@app.put("/menu")
 def update_food(food_id: int, food: FoodItem):
     if food_id not in menu_db:
         raise HTTPException(status_code=404, detail="Food not found")
     menu_db[food_id] = food
     return {"message": "Food updated", "food": food}
 
-@app.delete("/menu/{food_id}")
+@app.delete("/menu")
 def delete_food(food_id: int):
     if food_id not in menu_db:
         raise HTTPException(status_code=404, detail="Food not found")
     return menu_db.pop(food_id)
 
-@app.post("/order/{order_id}")
+@app.post("/order")
 def place_order(order_id: int, order: Order):
     if order.food_id not in menu_db:
         raise HTTPException(status_code=404, detail="Food not available")
